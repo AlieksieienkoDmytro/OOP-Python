@@ -12,7 +12,8 @@ def main():
     storage = Storage(
         host="localhost",
         user="root",
-        password="Alieksieienko6887",
+        # YOUR PASSWORD FROM DB!!!
+        password="",
         database="onlineshop"
     )
 

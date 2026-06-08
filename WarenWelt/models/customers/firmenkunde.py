@@ -1,5 +1,7 @@
-from costumers.kunde import Kunde
-from validator import Validator
+from models.customers.kunde import Kunde
+from database.validator import Validator
+from exceptions.shop_error import ShopError
+
 
 class Firmenkunde(Kunde):
 
@@ -19,5 +21,5 @@ class Firmenkunde(Kunde):
 
     def set_company_id(self, company_id):
         if not Validator.validate_company_id(company_id):
-            raise ValueError(f"Ungültiges Firmennummer-Format: '{company_id}'.")
+            raise ShopError(f"Ungültiges Firmennummer-Format: '{company_id}'.")
         self.__company_id = company_id

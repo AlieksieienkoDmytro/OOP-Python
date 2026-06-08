@@ -1,8 +1,9 @@
-from validator import Validator
+from database.validator import Validator
+from exceptions.shop_error import ShopError
 
 class Kunde:
 
-    def __init__(self, customer_id, name, address, email, phone, password):
+    def __init__(self, id, name, address, email, phone, password):
         # Declare variables here because PyCharm wants them initialized inside __init__
         self.__name = None
         self.__address = None
@@ -10,7 +11,7 @@ class Kunde:
         self.__phone = None
         self.__password = None
 
-        self.__id = customer_id
+        self.__id = id
 
         # Storing data in instance variables
         self.set_name(name)
@@ -32,7 +33,7 @@ class Kunde:
         # Call validator
         if not Validator.validate_name(name):
             # If validation fails, close the program safely
-            raise ValueError(f"Ungültiges Namensformat: '{name}'")
+            raise ShopError(f"Ungültiges Namensformat: '{name}'")
         self.__name = name
 
 
@@ -42,7 +43,7 @@ class Kunde:
 
     def set_address(self, address):
         if not Validator.validate_address(address):
-            raise ValueError(f"Ungültiges Adressformat: '{address}'")
+            raise ShopError(f"Ungültiges Adressformat: '{address}'")
         self.__address = address
 
 
@@ -52,7 +53,7 @@ class Kunde:
 
     def set_email(self, email):
         if not Validator.validate_email(email):
-            raise ValueError(f"Ungültiges E-Mail-Format: '{email}'")
+            raise ShopError(f"Ungültiges E-Mail-Format: '{email}'")
         self.__email = email
 
 
@@ -62,7 +63,7 @@ class Kunde:
 
     def set_phone(self, phone):
         if not Validator.validate_phone(phone):
-            raise ValueError(f"Ungültiges Telefonnummer-Format: '{phone}'")
+            raise ShopError(f"Ungültiges Telefonnummer-Format: '{phone}'")
         self.__phone = phone
 
 
@@ -72,5 +73,9 @@ class Kunde:
 
     def set_password(self, password):
         if len(password) < 6:
-            raise ValueError("Passwort muss mindestens 6 Zeichen lang sein.")
+            raise ShopError("Passwort muss mindestens 6 Zeichen lang sein.")
         self.__password = password
+
+
+    def set_id(self, new_id):
+        self.__id = new_id

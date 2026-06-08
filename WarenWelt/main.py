@@ -1,8 +1,11 @@
-from storage import Storage
-from costumers.privatkunde import PrivatKunde
-from costumers.firmenkunde import Firmenkunde
-from products.elektronik import Elektronik
-from products.buch import Buch
+from database.storage import Storage
+from models.customers.privatkunde import PrivatKunde
+from models.customers.firmenkunde import Firmenkunde
+from models.products.elektronik import Elektronik
+from models.products.buch import Buch
+from exceptions.shop_error import ShopError
+from repositories.customer_repository import CustomerRepository
+from repositories.product_repository import ProductRepository
 
 
 def main():
@@ -13,17 +16,20 @@ def main():
         host="localhost",
         user="root",
         # YOUR PASSWORD FROM DB!!!
-        password="",
+        password="Alieksieienko6887",
         database="onlineshop"
     )
+
+    customer_repository = CustomerRepository(storage)
+    product_repository = ProductRepository(storage)
 
     # Establish connection to the database
     try:
         print("Verbindung zur Datenbank wird hergestellt...")
         storage.connect()
         print("Datenbankverbindung erfolgreich hergestellt.\n")
-    except RuntimeError as e:
-        print(f"Datenbankverbindung fehlgeschlagen: {e}")
+    except ShopError as error:
+        print(f"Datenbankverbindung fehlgeschlagen: {error}")
         return
 
     # Creating Max Verstappen (PrivatKunde)
@@ -40,15 +46,15 @@ def main():
 
         # Saving Max Verstappen to the database
         print("PrivatKunde wird in der Datenbank gespeichert...")
-        storage.save_privatkunde(max_v)
+        customer_repository.save_privatkunde(max_v)
         print("PrivatKunde erfolgreich in der Datenbank gespeichert.")
 
         # Displaying data including the newly generated database ID
         print(f"ID: {max_v.get_id()} | Name: {max_v.get_name()} | Geburtsdatum: {max_v.get_birthdate()}\n")
-    except ValueError as e:
-        print(f"Fehler beim Erstellen des Privatkunden: {e}\n")
-    except RuntimeError as e:
-        print(f"Datenbankfehler beim Speichern des Privatkunden: {e}\n")
+    except ShopError as error:
+        print(f"Fehler beim Erstellen des Privatkunden: {error}\n")
+    except ShopError as error:
+        print(f"Datenbankfehler beim Speichern des Privatkunden: {error}\n")
 
     # Creating Red Bull Racing (Firmenkunde)
     try:
@@ -64,15 +70,15 @@ def main():
 
         # Saving Red Bull Racing to the database
         print("Firmenkunde wird in der Datenbank gespeichert...")
-        storage.save_firmenkunde(rbr)
+        customer_repository.save_firmenkunde(rbr)
         print("Firmenkunde erfolgreich in der Datenbank gespeichert.")
 
         # Displaying data including the newly generated database ID
         print(f"ID: {rbr.get_id()} | Name: {rbr.get_name()} | Firmennummer: {rbr.get_company_id()}\n")
-    except ValueError as e:
-        print(f"Fehler beim Erstellen des Firmenkunden: {e}\n")
-    except RuntimeError as e:
-        print(f"Datenbankfehler beim Speichern des Firmenkunden: {e}\n")
+    except ShopError as error:
+        print(f"Fehler beim Erstellen des Firmenkunden: {error}\n")
+    except ShopError as error:
+        print(f"Datenbankfehler beim Speichern des Firmenkunden: {error}\n")
 
     # Creating MacBook Pro (Elektronik)
     try:
@@ -87,16 +93,16 @@ def main():
 
         # Saving MacBook Pro to the database
         print("Elektronik wird in der Datenbank gespeichert...")
-        storage.save_elektronik(laptop)
+        product_repository.save_elektronik(laptop)
         print("Elektronik erfolgreich in der Datenbank gespeichert.")
 
         # Displaying data including the newly generated database ID
         print(
             f"ID: {laptop.get_id()} | Name: {laptop.get_name()} | Preis: {laptop.get_price()} | Marke: {laptop.get_brand()}\n")
-    except ValueError as e:
-        print(f"Fehler beim Erstellen der Elektronik: {e}\n")
-    except RuntimeError as e:
-        print(f"Datenbankfehler beim Speichern der Elektronik: {e}\n")
+    except ShopError as error:
+        print(f"Fehler beim Erstellen der Elektronik: {error}\n")
+    except ShopError as error:
+        print(f"Datenbankfehler beim Speichern der Elektronik: {error}\n")
 
     # Creating Python Book (Buch)
     try:
@@ -111,28 +117,28 @@ def main():
 
         # Saving Book to the database
         print("Buch wird in der Datenbank gespeichert...")
-        storage.save_buch(book)
+        product_repository.save_buch(book)
         print("Buch erfolgreich in der Datenbank gespeichert.")
 
         # Displaying data including the newly generated database ID
         print(
             f"ID: {book.get_id()} | Name: {book.get_name()} | Autor: {book.get_author()} | Seiten: {book.get_pages()}\n")
-    except ValueError as e:
-        print(f"Fehler beim Erstellen des Buches: {e}\n")
-    except RuntimeError as e:
-        print(f"Datenbankfehler beim Speichern des Buches: {e}\n")
+    except ShopError as error:
+        print(f"Fehler beim Erstellen des Buches: {error}\n")
+    except ShopError as error:
+        print(f"Datenbankfehler beim Speichern des Buches: {error}\n")
 
     print("=== TEST DATEN LADEN ===")
 
     # Test loading a single customer (adjust ID if needed)
     print("Lade Privatkunde mit ID 1...")
-    kunde = storage.load_kunde(1, "privatkunde")
-    print(f"Geladener Kunde: {kunde}\n")
+    customer = customer_repository.load_privatkunde(1)
+    print(f"Geladener Kunde: {customer}\n")
 
     # Test loading all products from a category
     print("Lade alle Bücher...")
-    buecher = storage.load_all_produkte("buch")
-    print(f"Alle Bücher: {buecher}\n")
+    books = product_repository.load_all_buecher()
+    print(f"Alle Bücher: {books}\n")
 
     print("=== TESTVALIDIERUNG (ERWARTETE FEHLER) ===\n")
 
@@ -146,7 +152,7 @@ def main():
             password="111111111",
             birthdate="1990-01-26"
         )
-    except ValueError as e:
+    except ShopError as e:
         print(f"Erwarteter Fehler beim Erstellen des Privatkunden: {e}\n")
 
     # Disconnect from the database safely

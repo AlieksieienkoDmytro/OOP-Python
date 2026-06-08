@@ -1,5 +1,7 @@
-from costumers.kunde import Kunde
-from validator import Validator
+from models.customers.kunde import Kunde
+from database.validator import Validator
+from exceptions.shop_error import ShopError
+
 
 class PrivatKunde(Kunde):
 
@@ -20,5 +22,5 @@ class PrivatKunde(Kunde):
 
     def set_birthdate(self, birthdate):
         if not Validator.validate_birthdate(birthdate):
-            raise ValueError(f"Ungültiges Geburtsdatum-Format: '{birthdate}'. Erwartet wird YYYY-MM-DD.")
+            raise ShopError(f"Ungültiges Geburtsdatum-Format: '{birthdate}'. Erwartet wird YYYY-MM-DD.")
         self.__birthdate = birthdate

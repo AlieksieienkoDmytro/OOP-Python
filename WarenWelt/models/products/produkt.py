@@ -1,4 +1,5 @@
-from validator import Validator
+from database.validator import Validator
+from exceptions.shop_error import ShopError
 
 class Produkt:
     def __init__(self, id, name, price, weight):
@@ -25,7 +26,7 @@ class Produkt:
 
     def set_name(self, name):
         if not Validator.validate_name(name):
-            raise ValueError(f"Ungültiges Namensformat: '{name}'")
+            raise ShopError(f"Ungültiges Namensformat: '{name}'")
         self.__name = name
 
     def get_price(self):
@@ -33,7 +34,7 @@ class Produkt:
 
     def set_price(self, price):
         if not Validator.validate_price(price):
-            raise ValueError(f"Ungültiger Preis: '{price}'.")
+            raise ShopError(f"Ungültiger Preis: '{price}'.")
         self.__price = float(price)
 
     def get_weight(self):
@@ -41,5 +42,5 @@ class Produkt:
 
     def set_weight(self, weight):
         if not Validator.validate_weight(weight):
-            raise ValueError(f"Ungültiges Gewicht: '{weight}'.")
+            raise ShopError(f"Ungültiges Gewicht: '{weight}'.")
         self.__weight = float(weight)

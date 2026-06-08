@@ -1,5 +1,6 @@
-from products.produkt import Produkt
-from validator import Validator
+from models.products.produkt import Produkt
+from database.validator import Validator
+from exceptions.shop_error import ShopError
 
 class Kleidung(Produkt):
 
@@ -19,7 +20,7 @@ class Kleidung(Produkt):
 
     def set_size(self, size):
         if not Validator.validate_size(size):
-            raise ValueError(f"Ungültiges Größenformat: '{size}'")
+            raise ShopError(f"Ungültiges Größenformat: '{size}'")
         self.__size = size
 
 
@@ -29,5 +30,5 @@ class Kleidung(Produkt):
 
     def set_color(self, color):
         if not Validator.validate_color(color):
-            raise ValueError(f"Ungültiges Farbformat: '{color}'")
+            raise ShopError(f"Ungültiges Farbformat: '{color}'")
         self.__color = color

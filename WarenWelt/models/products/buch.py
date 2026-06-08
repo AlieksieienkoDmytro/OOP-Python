@@ -1,5 +1,7 @@
-from products.produkt import Produkt
-from validator import Validator
+from models.products.produkt import Produkt
+from database.validator import Validator
+from exceptions.shop_error import ShopError
+
 
 class Buch(Produkt):
 
@@ -22,7 +24,7 @@ class Buch(Produkt):
 
     def set_author(self, author):
         if not Validator.validate_author(author):
-            raise ValueError(f"Ungültiges Autorenformat: '{author}'")
+            raise ShopError(f"Ungültiges Autorenformat: '{author}'")
         self.__author = author
 
 
@@ -31,5 +33,5 @@ class Buch(Produkt):
 
     def set_pages(self, pages):
         if not Validator.validate_pages(pages):
-            raise ValueError(f"Ungültige Seitenanzahl: '{pages}'")
+            raise ShopError(f"Ungültige Seitenanzahl: '{pages}'")
         self.__pages = int(pages)

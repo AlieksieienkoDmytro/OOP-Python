@@ -1,5 +1,7 @@
-from products.produkt import Produkt
-from validator import Validator
+from models.products.produkt import Produkt
+from database.validator import Validator
+from exceptions.shop_error import ShopError
+
 
 class Elektronik(Produkt):
 
@@ -19,7 +21,7 @@ class Elektronik(Produkt):
 
     def set_brand(self, brand):
         if not Validator.validate_brand(brand):
-            raise ValueError(f"Ungültiges Markenformat: '{brand}'")
+            raise ShopError(f"Ungültiges Markenformat: '{brand}'")
         self.__brand = brand
 
 
@@ -29,5 +31,5 @@ class Elektronik(Produkt):
 
     def set_warranty_years(self, warranty_years):
         if not Validator.validate_warranty(warranty_years):
-            raise ValueError(f"Ungültige Garantiezeit: '{warranty_years}'")
+            raise ShopError(f"Ungültige Garantiezeit: '{warranty_years}'")
         self.__warranty_years = int(warranty_years)

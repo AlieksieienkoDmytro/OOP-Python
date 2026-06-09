@@ -50,15 +50,13 @@ class Storage:
 
             self.__connection.rollback()
 
-            raise ShopError(
-                f"Datenbankabfrage fehlgeschlagen: {error}"
-            )
+            raise ShopError(f"Datenbankabfrage fehlgeschlagen: {error}")
 
 
     def fetch_query(self, query, values=None):
 
         try:
-            with self.__connection.cursor() as cursor:
+            with self.__connection.cursor(dictionary=True) as cursor:
 
                 cursor.execute(query, values)
 
@@ -66,6 +64,4 @@ class Storage:
 
         except Exception as error:
 
-            raise ShopError(
-                f"Datenbankabfrage fehlgeschlagen: {error}"
-            )
+            raise ShopError(f"Datenbankabfrage fehlgeschlagen: {error}")

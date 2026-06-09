@@ -32,3 +32,86 @@ class Kleidung(Produkt):
         if not Validator.validate_color(color):
             raise ShopError(f"Ungültiges Farbformat: '{color}'")
         self.__color = color
+
+
+    def save(self, storage):
+
+        query = """
+        INSERT INTO kleidung (name, price, weight, size, color)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        values = (
+            self.get_name(),
+            self.get_price(),
+            self.get_weight(),
+            self.get_size(),
+            self.get_color()
+        )
+
+        product_id = storage.execute_query(
+            query,
+            values
+        )
+
+        self.set_id(product_id)
+
+
+
+    @staticmethod
+    def load(storage, product_id):
+
+        query = """
+        SELECT *
+        FROM kleidung
+        WHERE id = %s
+        """
+
+        result = storage.fetch_query(
+            query,
+            (product_id,)
+        )
+
+        if not result:
+            return None
+
+        row = result[0]
+
+        clothing = Kleidung(
+            row['name'],
+            row['price'],
+            row['weight'],
+            row['size'],
+            row['color']
+        )
+
+        clothing.set_id(row['id'])
+
+        return clothing
+
+
+    @staticmethod
+    def load_all(storage):
+
+        query = """
+        SELECT *
+        FROM kleidung
+        """
+
+        result = storage.fetch_query(query)
+
+        clothings = []
+
+        for row in result:
+            clothing = Kleidung(
+                row['name'],
+                row['price'],
+                row['weight'],
+                row['size'],
+                row['color']
+            )
+
+            clothing.set_id(row['id'])
+
+            clothings.append(clothing)
+
+        return clothings

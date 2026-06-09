@@ -31,7 +31,93 @@ class Buch(Produkt):
     def get_pages(self):
         return self.__pages
 
+
     def set_pages(self, pages):
         if not Validator.validate_pages(pages):
             raise ShopError(f"Ungültige Seitenanzahl: '{pages}'")
         self.__pages = int(pages)
+
+
+    def save(self, storage):
+
+        query = """
+        INSERT INTO buch
+        (name, price, weight, author, pages)
+        VALUES
+        (%s, %s, %s, %s, %s)
+        """
+
+        values = (
+            self.get_name(),
+            self.get_price(),
+            self.get_weight(),
+            self.get_author(),
+            self.get_pages()
+        )
+
+        product_id = storage.execute_query(
+            query,
+            values
+        )
+
+        self.set_id(product_id)
+
+
+    @staticmethod
+    def load(storage, book_id):
+
+        query = """
+        SELECT *
+        FROM buch
+        WHERE id = %s
+        """
+
+        result = storage.fetch_query(
+            query,
+            (book_id,)
+        )
+
+        if not result:
+            return None
+
+        row = result[0]
+
+        book = Buch(
+            row['name'],
+            row['price'],
+            row['weight'],
+            row['author'],
+            row['pages']
+        )
+
+        book.set_id(row["id"])
+
+        return book
+
+
+    @staticmethod
+    def load_all(storage):
+
+        query = """
+        SELECT *
+        FROM buch
+        """
+
+        results = storage.fetch_query(query)
+
+        books = []
+
+        for row in results:
+            book = Buch(
+                row['name'],
+                row['price'],
+                row['weight'],
+                row['author'],
+                row['pages']
+            )
+
+            book.set_id(row["id"])
+
+            books.append(book)
+
+        return books

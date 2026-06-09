@@ -4,8 +4,6 @@ from exceptions.shop_error import ShopError
 class Produkt:
     def __init__(self, id, name, price, weight):
         self.__name = None
-        self.__address = None
-        self.__email = None
         self.__price = None
         self.__weight = None
 

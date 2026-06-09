@@ -18,8 +18,8 @@ class Validator:
 
     @staticmethod
     def validate_name(name):
-        # Allows letters, spaces, and hyphens
-        pattern = r"^[a-zA-Z\s-]+$"
+        # Allows letters, digits, spaces, hyphens, and periods. Length must be between 1 and 100 characters
+        pattern = r"^[a-zA-Z0-9\s\-\.]+$"
         return bool(re.match(pattern, name))
 
 
@@ -39,8 +39,8 @@ class Validator:
 
     @staticmethod
     def validate_company_id(company_id):
-        # Only digits allowed, with a strict length constraint of 5 to 15 characters
-        pattern = r"^[0-9]{5,15}+$"
+        # Allows letters, digits, and hyphens, with a length between 3 and 20 characters
+        pattern = r"^[A-Za-z0-9-]{3,20}$"
         return bool(re.match(pattern, company_id))
 
 

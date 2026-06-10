@@ -14,7 +14,8 @@ def main():
     storage = Storage(
         "localhost",
         "root",
-        "Alieksieienko6887",
+        # YOUR PASSWORD!!!
+        "password",
         "onlineshop"
     )
 

@@ -108,3 +108,36 @@ class PrivatKunde(Kunde):
             customers.append(customer)
 
         return customers
+
+
+    @staticmethod
+    def load_by_email(storage, email):
+
+        query = """
+        SELECT *
+        FROM privatkunde
+        WHERE email = %s
+        """
+
+        result = storage.fetch_query(
+            query,
+            (email,)
+        )
+
+        if not result:
+            return None
+
+        row = result[0]
+
+        customer = PrivatKunde(
+            row["name"],
+            row["address"],
+            row["email"],
+            row["phone"],
+            row["password"],
+            str(row["birthdate"])
+        )
+
+        customer.set_id(row["id"])
+
+        return customer

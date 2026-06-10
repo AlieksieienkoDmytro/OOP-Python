@@ -1,7 +1,8 @@
+from abc import ABC
 from database.validator import Validator
 from exceptions.shop_error import ShopError
 
-class Produkt:
+class Produkt(ABC):
     def __init__(self, id, name, price, weight):
         self.__name = None
         self.__price = None

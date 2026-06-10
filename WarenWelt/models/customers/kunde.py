@@ -1,7 +1,8 @@
+from abc import ABC
 from database.validator import Validator
 from exceptions.shop_error import ShopError
 
-class Kunde:
+class Kunde(ABC):
 
     def __init__(self, id, name, address, email, phone, password):
         # Declare variables here because PyCharm wants them initialized inside __init__

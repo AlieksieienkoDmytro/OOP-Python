@@ -62,8 +62,8 @@ class Validator:
 
     @staticmethod
     def validate_author(author):
-        # Allows letters, spaces, and hyphens
-        pattern = r"^[a-zA-Z\s-]+$"
+        # Allows letters, spaces, periods, apostrophes, and hyphens
+        pattern = r"^[a-zA-Z\s.'-]+$"
         return bool(re.match(pattern, author)) if author else False
 
 
@@ -94,8 +94,8 @@ class Validator:
 
     @staticmethod
     def validate_size(size):
-        # Only alphanumeric characters allowed (e.g., S, M, L, XL, 32, 34)
-        pattern = r"^[a-zA-Z0-9]+$"
+        # Allows letters, digits, spaces, and hyphens
+        pattern = r"^[a-zA-Z0-9\s-]+$"
         return bool(re.match(pattern, size)) if size else False
 
 

@@ -109,7 +109,6 @@ class Firmenkunde(Kunde):
         return customers
 
 
-
     @staticmethod
     def load_by_email(storage, email):
 

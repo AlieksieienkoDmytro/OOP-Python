@@ -104,3 +104,10 @@ class Validator:
         # Only letters allowed
         pattern = r"^[a-zA-Z\s-]+$"
         return bool(re.match(pattern, color)) if color else False
+
+
+    @staticmethod
+    def validate_digits(digits):
+        # Digits
+        pattern = r"^\d+$"
+        return bool(re.match(pattern, digits)) if digits else False

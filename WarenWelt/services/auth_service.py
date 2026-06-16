@@ -31,7 +31,7 @@ class AuthService:
             birthdate
     ):
 
-        if PrivatKunde.load_by_email(storage, email):
+        if AuthService.email_exists(storage, email):
             raise ShopError("E-Mail bereits vergeben.")
 
         customer = PrivatKunde(
@@ -58,7 +58,7 @@ class AuthService:
             company_id
     ):
 
-        if Firmenkunde.load_by_email(storage, email):
+        if AuthService.email_exists(storage, email):
             raise ShopError("E-Mail bereits vergeben.")
 
         customer = Firmenkunde(
@@ -73,3 +73,15 @@ class AuthService:
         customer.save(storage)
 
         return customer
+
+
+    @staticmethod
+    def email_exists(storage, email):
+
+        if PrivatKunde.load_by_email(storage, email):
+            return True
+
+        if Firmenkunde.load_by_email(storage, email):
+            return True
+
+        return False

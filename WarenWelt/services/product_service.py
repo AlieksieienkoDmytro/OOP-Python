@@ -10,17 +10,9 @@ class ProductService:
 
         products = []
 
-        products.extend(
-            Buch.load_all(storage)
-        )
-
-        products.extend(
-            Elektronik.load_all(storage)
-        )
-
-        products.extend(
-            Kleidung.load_all(storage)
-        )
+        products.extend(Buch.load_all(storage))
+        products.extend(Elektronik.load_all(storage))
+        products.extend(Kleidung.load_all(storage))
 
         return products
 

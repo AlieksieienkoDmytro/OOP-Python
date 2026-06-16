@@ -47,9 +47,7 @@ class Storage:
                 return cursor.lastrowid
 
         except Exception as error:
-
             self.__connection.rollback()
-
             raise ShopError(f"Datenbankabfrage fehlgeschlagen: {error}")
 
 
@@ -63,5 +61,4 @@ class Storage:
                 return cursor.fetchall()
 
         except Exception as error:
-
             raise ShopError(f"Datenbankabfrage fehlgeschlagen: {error}")

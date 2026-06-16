@@ -25,8 +25,8 @@ class Bestellung:
     def calculate_total_amount(self):
         total_amount = 0
 
-        for product in self.__products:
-            total_amount += product.get_price()
+        for product, quantity in self.__products.items():
+            total_amount += (product.get_price() * quantity)
 
         if isinstance(self.__customer, Firmenkunde):
             total_amount *= 0.95
@@ -39,16 +39,16 @@ class Bestellung:
 
             file.write("===== INVOICE =====\n\n")
 
-            file.write(f"Order Date: {self.__order_date}\n")
-            file.write(f"Customer: {self.__customer.get_name()}\n")
-            file.write(f"Email: {self.__customer.get_email()}\n")
-            file.write(f"Address: {self.__customer.get_address()}\n\n")
+            file.write(f"Order Date: {self.get_order_date()}\n")
+            file.write(f"Customer: {self.get_customer().get_name()}\n")
+            file.write(f"Email: {self.get_customer().get_email()}\n")
+            file.write(f"Address: {self.get_customer().get_address()}\n\n")
 
             file.write("Products:\n")
 
-            for product in self.__products:
+            for product, quantity in self.__products.items():
                 file.write(
-                    f"- {product.get_name()} | "
+                    f"- {product.get_name()} x{quantity} | "
                     f"{product.get_price():.2f} EUR\n"
                 )
 

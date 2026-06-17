@@ -1,28 +1,16 @@
-from database.storage import Storage
-from menu.start_menu import start_menu
+# This is a sample Python script.
+
+# Press Umschalt+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-def main():
-
-    print("=== ONLINE SHOP TEST ===\n")
-
-    storage = Storage(
-        "localhost",
-        "root",
-        # YOUR PASSWORD!!!
-        "",
-        "onlineshop"
-    )
-
-    storage.connect()
-
-    try:
-
-        start_menu(storage)
-
-    finally:
-        storage.disconnect()
+def print_hi(name):
+    # Use a breakpoint in the code line below to debug your script.
+    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
 
 
-if __name__ == "__main__":
-    main()
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    print_hi('PyCharm')
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
